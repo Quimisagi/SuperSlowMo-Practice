@@ -71,7 +71,7 @@ class UNet(nn.Module):
 
     def __init__(self, in_channels, out_channels):
         super(UNet, self).__init__()
-        self.convolution1 = nn.Conv2d(in_channels, 32, 7, padding=3, stride=1)
+        self.convolution1 = nn.Conv2d(in_channels, 6, 7, padding=3, stride=1)
         self.encoder1 = EncoderBlock(in_channels, 64)
         self.encoder2 = EncoderBlock(64, 128)
         self.encoder3 = EncoderBlock(128, 256)
@@ -137,3 +137,8 @@ def GetFlowCoefficients(device):
             torch.tensor(C10)[None, None, None, None].to(device),
             torch.tensor(C11)[None, None, None, None].to(device))
 
+def GetWarpCoefficients(device):
+    C0 = (1 - t)
+    C1 = t
+    return (torch.tensor(C0)[None, None, None, None].to(device)
+            , torch.tensor(C1)[None, None, None, None].to(device))
